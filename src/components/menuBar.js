@@ -1,7 +1,7 @@
 const electron = require('electron');
 const {app} = electron;
 const {apple} = require('./../constants/helperConstants');
-const mainWindow = require('../app/MainWindow');
+const mainWindow = require('../app/windowController/AddItemWindow');
 
 const menu = {};
 menu.mainMenuTemplate = [
@@ -9,7 +9,7 @@ menu.mainMenuTemplate = [
         label: 'file',
         submenu: [
             {
-                label: 'Add Item',
+                label: 'Add Url',
                 click() {
                     mainWindow.createAddWindow();
                 }

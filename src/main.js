@@ -4,6 +4,8 @@ const path = require('path');
 
 const {app, BrowserWindow, Menu, ipcMain} = electron;
 const menuBar = require('./components/menuBar');
+const addWindow = require('./app/windowController/AddItemWindow');
+const itemOperations = require('./app/functions/itemOperations');
 
 let mainWindow;
 
@@ -34,5 +36,11 @@ app.on('ready', () => {
      * inserting the menu
      */
     Menu.setApplicationMenu(mainMenu);
+});
+
+ipcMain.on('item:add', (e, item) => {
+    mainWindow.webContents.send('item:add', item);
+
+    addWindow.window.close();
 });
 

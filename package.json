@@ -20,7 +20,9 @@
   },
   "homepage": "https://github.com/rahulreghunath/FB-External-Link-Share-Analytics#readme",
   "dependencies": {
+    "axios": "^0.18.0",
     "electron": "^4.0.1",
+    "materialize-css": "^1.0.0",
     "vue": "^2.5.22"
   }
 }

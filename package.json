@@ -1,0 +1,26 @@
+{
+  "name": "fb-external-link-share-analytics",
+  "version": "1.0.0",
+  "description": "Analyse the engagement of an external URL in facebook",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "electron .",
+    "package-mac": "electron-packager . --overwrite --platform=darwin --arch=x64 --icon=assets/icons/mac/mac.ico --prune=true --out=release-builds",
+    "package-win": "electron-packager . ShoppingList --overwrite --asar=true --platform=win32 --arch=ia32 --icon=assets/icons/windows/windows.png --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"Electron Tutorial App\"",
+    "package-linux": "electron-packager . ShoppingList --overwrite --asar=true --platform=linux --arch=x64 --icon=assets/icons/linux/linux.png --prune=true --out=release-builds"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rahulreghunath/FB-External-Link-Share-Analytics.git"
+  },
+  "author": "Rahul Reghunath",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rahulreghunath/FB-External-Link-Share-Analytics/issues"
+  },
+  "homepage": "https://github.com/rahulreghunath/FB-External-Link-Share-Analytics#readme",
+  "dependencies": {
+    "electron": "^4.0.1",
+    "vue": "^2.5.22"
+  }
+}

@@ -7,17 +7,28 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Shopping List</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
+          integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
 </head>
 <body>
-<nav>
-    <div class="nav-wrapper">
-        <a class="brand-logo center">Shopping List</a>
-    </div>
-</nav>
-<div id="app">
-    <ul class="collection" v-if="items.length" v-for="item in items">
-        <li class="collection-item">{{item}}</li>
+<div id="app" class="window-body">
+
+
+    <ul class="collection" v-if="items.length">
+        <li class="collection-item avatar p-b-5" v-for="item in items">
+            <img :src="item.image" alt="" class="circle">
+           <span class="title"> {{item.title}}</span>
+            <div class="post-engagement-line">
+                <i class="fas fa-thumbs-up fb-color"></i> {{item.reactions}} | <i class="fas fa-comments fb-color"></i>
+                {{item.comments}} | <i class="fas fa-share fb-color"></i> {{item.shares}}
+
+            </div>
+            <a href="#!" class="secondary-content"></a>
+        </li>
     </ul>
+
+
 </div>
 <script>
     const electron = require('electron');

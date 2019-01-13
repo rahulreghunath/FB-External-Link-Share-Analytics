@@ -1,7 +1,7 @@
 const electron = require('electron');
 const {BrowserWindow} = electron;
 const url = require('url');
-const {view}=require('../functions/helpers');
+const {view} = require('../functions/helpers');
 const addItemWindow = {};
 let addWindow;
 

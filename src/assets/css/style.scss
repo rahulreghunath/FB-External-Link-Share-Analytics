@@ -1,0 +1,26 @@
+@import "variables";
+
+/**
+ * Reusable
+ */
+.p-b-5 {
+  padding: 0 5px;
+}
+
+.window-body {
+  @extend .p-b-5;
+}
+
+
+.fb-color {
+  color: $fb-color;
+}
+
+/**
+ * Static
+ */
+
+.post-engagement-line {
+  padding-top: 5px;
+}
+

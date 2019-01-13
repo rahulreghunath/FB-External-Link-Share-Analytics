@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Shopping List</title>
+    <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">-->
+    <link rel="stylesheet" href="../assets/photon-0.1.2-alpha/dist/css/photon.min.css">
+</head>
+<body>
+<header class="toolbar toolbar-header" style="padding: 3px 3px 0 3px;">
+    <div class="toolbar-actions">
+        <div class="btn-group">
+            <button class="btn btn-default">
+                <span class="icon icon-home"></span>
+            </button>
+            <button class="btn btn-default">
+                <span class="icon icon-folder"></span>
+            </button>
+            <button class="btn btn-default active">
+                <span class="icon icon-cloud"></span>
+            </button>
+            <button class="btn btn-default">
+                <span class="icon icon-popup"></span>
+            </button>
+            <button class="btn btn-default">
+                <span class="icon icon-shuffle"></span>
+            </button>
+        </div>
+
+        <button class="btn btn-default">
+            <span class="icon icon-home icon-text"></span>
+            Filters
+        </button>
+
+        <button class="btn btn-default btn-dropdown pull-right">
+            <span class="icon icon-megaphone"></span>
+        </button>
+    </div>
+</header>
+<div id="app">
+    <nav>
+        <div class="nav-wrapper">
+            <a class="brand-logo center">Shopping List</a>
+        </div>
+    </nav>
+    <ul class="collection" v-if="items.length" v-for="(item,index) in items">
+        <li class="collection-item" @click="removeItem(index)">{{ item}}</li>
+    </ul>
+</div>
+<script>
+    const electron = require('electron');
+    const Vue = require('vue/dist/vue');
+    const {ipcRenderer} = electron;
+
+    const app = new Vue({
+        el: '#app',
+        data: {
+            items: []
+        },
+        methods: {
+            removeItem(index) {
+                this.items.splice(index, 1);
+            }
+        }
+    });
+
+    ipcRenderer.on('item:add', (e, item) => {
+        app.items.push(item);
+    });
+    ipcRenderer.on('item:clear', () => {
+        app.items = [];
+    });
+</script>
+</body>
+</html>

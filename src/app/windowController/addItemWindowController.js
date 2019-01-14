@@ -2,17 +2,17 @@ const electron = require('electron');
 const {BrowserWindow} = electron;
 const url = require('url');
 const {view} = require('../functions/helpers');
-const addItemWindow = {};
+const addItemWindowController = {};
 let addWindow;
 
 /**
  * Create add new item window
  */
-addItemWindow.createAddWindow = () => {
+addItemWindowController.createAddWindow = () => {
     addWindow = new BrowserWindow({
         width: 500,
         height: 300,
-        title: 'Add shopping window'
+        title: 'Add shopping window',
     });
 
     /**
@@ -22,8 +22,12 @@ addItemWindow.createAddWindow = () => {
         pathname: view('addWindow'),
         protocol: 'file',
         slashes: true
-    }))
-    ;
+    }));
+
+    /**
+     * set menu to null
+     */
+    addWindow.setMenu(null);
 
     /**
      * Garbage Collection
@@ -36,7 +40,7 @@ addItemWindow.createAddWindow = () => {
      * pass window for further operations outside
      * @type {Electron.BrowserWindow}
      */
-    addItemWindow.window = addWindow;
+    addItemWindowController.window = addWindow;
 };
 
-module.exports = addItemWindow;
+module.exports = addItemWindowController;

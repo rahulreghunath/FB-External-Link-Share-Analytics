@@ -7,7 +7,8 @@
     "start": "electron .",
     "package-mac": "electron-packager . --overwrite --platform=darwin --arch=x64 --icon=assets/icons/mac/mac.ico --prune=true --out=release-builds",
     "package-win": "electron-packager . ShoppingList --overwrite --asar=true --platform=win32 --arch=ia32 --icon=assets/icons/windows/windows.png --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"Electron Tutorial App\"",
-    "package-linux": "electron-packager . ShoppingList --overwrite --asar=true --platform=linux --arch=x64 --icon=assets/icons/linux/linux.png --prune=true --out=release-builds"
+    "package-linux": "electron-packager . ShoppingList --overwrite --asar=true --platform=linux --arch=x64 --icon=assets/icons/linux/linux.png --prune=true --out=release-builds",
+    "rebuild": "electron-rebuild -f -w sqlite3"
   },
   "repository": {
     "type": "git",
@@ -24,9 +25,13 @@
     "electron": "^4.0.1",
     "grabity": "^1.0.4",
     "materialize-css": "^1.0.0",
+    "sequelize": "^4.42.0",
+    "sequelize-cli": "^5.4.0",
+    "sqlite3": "^4.0.6",
     "vue": "^2.5.22"
   },
   "devDependencies": {
-    "@fortawesome/fontawesome-free": "^5.6.3"
+    "@fortawesome/fontawesome-free": "^5.6.3",
+    "electron-rebuild": "^1.8.2"
   }
 }

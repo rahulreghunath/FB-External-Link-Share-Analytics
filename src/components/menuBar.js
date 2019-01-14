@@ -1,7 +1,7 @@
 const electron = require('electron');
 const {app} = electron;
 const {apple} = require('./../constants/helperConstants');
-const mainWindow = require('../app/windowController/AddItemWindow');
+const mainWindow = require('../app/windowController/addItemWindowController');
 
 const menu = {};
 menu.mainMenuTemplate = [

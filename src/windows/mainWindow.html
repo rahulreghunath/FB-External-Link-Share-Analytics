@@ -17,8 +17,8 @@
 
     <ul class="collection" v-if="items.length">
         <li class="collection-item avatar p-b-5" v-for="item in items">
-            <img :src="item.image" alt="" class="circle">
-           <span class="title"> {{item.title}}</span>
+            <img :src="item.imageUrl" alt="" class="circle">
+            <span class="title"> {{item.title}}</span>
             <div class="post-engagement-line">
                 <i class="fas fa-thumbs-up fb-color"></i> {{item.reactions}} | <i class="fas fa-comments fb-color"></i>
                 {{item.comments}} | <i class="fas fa-share fb-color"></i> {{item.shares}}
@@ -45,7 +45,11 @@
             }
         }
     });
-
+    ipcRenderer.on('item:old', (e, items) => {
+        app.items = items;
+        console.log(items);
+        console.log('ddsd');
+    });
     ipcRenderer.on('item:add', (e, item) => {
         app.items.push(item);
     });

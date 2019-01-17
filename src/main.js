@@ -3,18 +3,14 @@ const url = require('url');
 const path = require('path');
 const grabity = require('grabity');
 const {app, BrowserWindow, Menu, ipcMain} = electron;
+const moment = require('moment');
 
-/**
- * Components
- */
-
-const menuBar = require('./components/menuBar');
 
 /**
  * WindowController
  */
 
-const addWindow = require('./app/windowController/addItemWindowController');
+const addItemWindow = require('./app/windowController/addItemWindowController');
 
 /**
  *Functions
@@ -25,8 +21,12 @@ const itemOperations = require('./app/functions/itemOperations');
 /**
  * Database Operations
  */
-
 const itemDbOperations = require('./database/itemDbOperations');
+
+/**
+ * helpers
+ */
+const {apple} = require('./constants/helperConstants');
 
 /**
  * Local variables
@@ -54,7 +54,7 @@ app.on('ready', () => {
     mainWindow.on('closed', () => {
         app.quit();
     });
-    const mainMenu = Menu.buildFromTemplate(menuBar.mainMenuTemplate);
+    const mainMenu = Menu.buildFromTemplate(mainMenuTemplate);
 
     // mainWindow.setMenu(mainMenu)
 
@@ -63,13 +63,20 @@ app.on('ready', () => {
      */
     Menu.setApplicationMenu(mainMenu);
 
-    // mainWindow.webContents.send('item:add', data);
-
+    mainWindow.webContents.once('dom-ready', () => {
+        itemDbOperations.getAllData().then(data => {
+            mainWindow.webContents.send('item:old', data);
+        });
+    });
+    mainWindow.webContents.on('reload', () => {
+        // itemDbOperations.getAllData().then(data => {
+        //     mainWindow.webContents.send('item:old', data);
+        // });
+        console.log('reloaded');
+    });
 });
-itemDbOperations.getAllData().then(data => {
 
-    mainWindow.webContents.send('item:old', 'data');
-});
+
 ipcMain.on('item:add', (e, item) => {
 
     /**
@@ -92,17 +99,20 @@ ipcMain.on('item:add', (e, item) => {
 
                 getImage(item).then((image) => {
                     const data = {
-                        url: item,
-                        title: response.data.og_object.title,
-                        reactions: response.data.engagement.reaction_count,
-                        comments: response.data.engagement.comment_count,
-                        shares: response.data.engagement.share_count,
-                        imageUrl: image,
+                        dataValues: {
+                            url: item,
+                            title: response.data.og_object.title,
+                            reactions: response.data.engagement.reaction_count,
+                            comments: response.data.engagement.comment_count,
+                            shares: response.data.engagement.share_count,
+                            imageUrl: image,
+                            status: 1,
+                        }
                     };
-
+                    itemDbOperations.saveData(data.dataValues);
+                    data.dataValues.updatdAt = moment();
                     mainWindow.webContents.send('item:add', data);
 
-                    itemDbOperations.saveData(data);
                 });
 
             }
@@ -112,3 +122,53 @@ ipcMain.on('item:add', (e, item) => {
     });
     addWindow.window.close();
 });
+
+
+const mainMenuTemplate = [
+    {
+        label: 'file',
+        submenu: [
+            {
+                label: 'Add Url',
+                click() {
+                    addItemWindow.createAddWindow();
+                }
+            },
+            {
+                label: 'Refresh',
+                click() {
+                    itemOperations.refreshItems().then(response => {
+                        console.log({completed: response})
+                    });
+                }
+            },
+            {
+                label: 'Quit',
+                accelerator: apple ? 'Command+Q' : 'Ctrl+Q',
+                click() {
+                    app.quit();
+                }
+            }
+        ]
+    }
+];
+
+if (process.env.NODE_ENV !== 'production') {
+    mainMenuTemplate.push(
+        {
+            label: 'Dev Tools',
+            submenu: [
+                {
+                    label: 'Toggle DevTools',
+                    accelerator: apple ? 'Command+i' : 'Ctrl+i',
+                    click(item, focusedWindow) {
+                        focusedWindow.toggleDevTools();
+                    }
+                },
+                {
+                    role: 'reload'
+                }
+            ]
+        }
+    );
+}

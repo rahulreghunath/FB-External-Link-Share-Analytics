@@ -10,6 +10,25 @@
 /**
  * Static
  */
+/**
+ * disable text selection
+ */
+body {
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none; }
+
+/**
+ * disable dragging of image
+ */
+img {
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-drag: none;
+  -webkit-user-select: none;
+  -ms-user-select: none; }
+
 .post-engagement-line {
   padding-top: 5px; }
 

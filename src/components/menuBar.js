@@ -1,8 +1,8 @@
 const electron = require('electron');
 const {app} = electron;
 const {apple} = require('./../constants/helperConstants');
-const mainWindow = require('../app/windowController/addItemWindowController');
-
+const addItemWindow = require('../app/windowController/addItemWindowController');
+const {refreshItems} = require('../app/functions/itemOperations');
 const menu = {};
 menu.mainMenuTemplate = [
     {
@@ -11,7 +11,13 @@ menu.mainMenuTemplate = [
             {
                 label: 'Add Url',
                 click() {
-                    mainWindow.createAddWindow();
+                    addItemWindow.createAddWindow();
+                }
+            },
+            {
+                label: 'Refresh',
+                click() {
+                    refreshItems();
                 }
             },
             {

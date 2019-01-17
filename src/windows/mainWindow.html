@@ -5,37 +5,39 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Shopping List</title>
+    <title>Fb Analyst</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <link rel="stylesheet" href="../assets/css/style.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
           integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
 </head>
 <body>
-<div id="app" class="window-body">
+<div id="app" class="window-body" >
 
 
     <ul class="collection" v-if="items.length">
-        <li class="collection-item avatar p-b-5" v-for="item in items">
-            <img :src="item.imageUrl" alt="" class="circle">
-            <span class="title"> {{item.title}}</span>
+        <li class="collection-item avatar p-b-5" v-for="{dataValues} in items">
+            <img :src="dataValues.imageUrl" alt="" class="circle">
+            <span class="title"> {{dataValues.title}}</span>
             <div class="post-engagement-line">
-                <i class="fas fa-thumbs-up fb-color"></i> {{item.reactions}} | <i class="fas fa-comments fb-color"></i>
-                {{item.comments}} | <i class="fas fa-share fb-color"></i> {{item.shares}}
-
+                <i class="fas fa-thumbs-up fb-color"></i> {{dataValues.reactions}} | <i
+                    class="fas fa-comments fb-color"></i>
+                {{dataValues.comments}} | <i class="fas fa-share fb-color"></i> {{dataValues.shares}} |
+                <i class="fas fa-clock fb-color"></i> {{dateTime(dataValues.updatedAt)}}
             </div>
             <a href="#!" class="secondary-content"></a>
         </li>
     </ul>
-
-
 </div>
 <script>
     const electron = require('electron');
     const Vue = require('vue/dist/vue');
     const {ipcRenderer} = electron;
+    const {dateTimeFormatter} = require('../mixins/helper');
+
     const app = new Vue({
         el: '#app',
+        mixins: [dateTimeFormatter],
         data: {
             items: []
         },
@@ -43,19 +45,20 @@
             removeItem(index) {
                 this.items.splice(index, 1);
             }
+        },
+        mounted() {
+            ipcRenderer.on('item:add', (e, item) => {
+                app.items.unshift(item);
+            });
+            ipcRenderer.on('item:old', (e, items) => {
+                app.items = items;
+            });
+            ipcRenderer.on('item:clear', () => {
+                app.items = [];
+            });
         }
     });
-    ipcRenderer.on('item:old', (e, items) => {
-        app.items = items;
-        console.log(items);
-        console.log('ddsd');
-    });
-    ipcRenderer.on('item:add', (e, item) => {
-        app.items.push(item);
-    });
-    ipcRenderer.on('item:clear', () => {
-        app.items = [];
-    });
+
 </script>
 </body>
 </html>

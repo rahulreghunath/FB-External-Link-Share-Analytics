@@ -25,6 +25,7 @@
     "electron": "^4.0.1",
     "grabity": "^1.0.4",
     "materialize-css": "^1.0.0",
+    "moment": "^2.23.0",
     "sequelize": "^4.42.0",
     "sequelize-cli": "^5.4.0",
     "sqlite3": "^4.0.6",

@@ -33,6 +33,11 @@ module.exports = {
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
+      },
+      status: {
+        allowNull: false,
+        default:1,
+        type: Sequelize.INTEGER
       }
     });
   },

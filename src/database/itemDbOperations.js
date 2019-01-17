@@ -21,10 +21,36 @@ itemDbOperations.saveData = (data) => {
  * @returns {Promise<>}
  */
 itemDbOperations.getAllData = async () => {
-    return await Url.findAll().then(results => {
+    return await Url.findAll({
+        order: [
+            ['id', 'DESC'],
+        ],
+    }).then(results => {
         return results;
     });
 };
 
+itemDbOperations.updateData = async ({id, data}) => {
+
+    const oldData = await Url.findOne({where: {id: id}});
+    return await oldData.update(data).then(response => {
+        // console.log({updated: id});
+        return true;
+    });
+    //
+    //             return true;
+    //         });
+    // return await Url.findOne({where: {id: id}}).then(oldData => {
+    //     console.log({updated: id});
+    //     if (oldData) {
+    //         oldData.update(data).then(response => {
+    //
+    //             return true;
+    //         });
+    //     }
+    // })
+};
 
 module.exports = itemDbOperations;
+
+

@@ -33,10 +33,12 @@ const {apple} = require('./constants/helperConstants');
  */
 let mainWindow;
 
+
 /**
  * Load Main Window
  */
 app.on('ready', () => {
+
     mainWindow = new BrowserWindow();
 
     /**
@@ -68,7 +70,7 @@ app.on('ready', () => {
             mainWindow.webContents.send('item:old', data);
         });
     });
-    mainWindow.webContents.on('reload', () => {
+    mainWindow.on('reloaded', () => {
         // itemDbOperations.getAllData().then(data => {
         //     mainWindow.webContents.send('item:old', data);
         // });
@@ -120,7 +122,7 @@ ipcMain.on('item:add', (e, item) => {
         }).catch(error => {
         console.log(error);
     });
-    addWindow.window.close();
+    addItemWindow.window.close();
 });
 
 
@@ -138,7 +140,11 @@ const mainMenuTemplate = [
                 label: 'Refresh',
                 click() {
                     itemOperations.refreshItems().then(response => {
-                        console.log({completed: response})
+                        setTimeout(() => {
+                            itemDbOperations.getAllData().then(data => {
+                                mainWindow.webContents.send('item:old', data);
+                            });
+                        }, 5000);
                     });
                 }
             },

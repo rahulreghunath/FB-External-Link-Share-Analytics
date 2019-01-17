@@ -4,8 +4,17 @@
 .p-b-5, .window-body {
   padding: 0 5px; }
 
+.pointer {
+  cursor: pointer; }
+
 .fb-color {
   color: #4267b2; }
+
+.pull-right {
+  float: right; }
+
+.pull-left {
+  float: left; }
 
 /**
  * Static
@@ -31,5 +40,8 @@ img {
 
 .post-engagement-line {
   padding-top: 5px; }
+
+.option-icon-buttons i {
+  padding: 0 5px; }
 
 /*# sourceMappingURL=style.css.map */

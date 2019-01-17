@@ -53,6 +53,18 @@ itemOperations.refreshItems = async () => {
 
 };
 
+itemOperations.refreshItem = async ({id, url}) => {
+    const response = await itemOperations.fetchApiData(url);
+    if (response !== null) {
+        const data = {
+            reactions: response.data.engagement.reaction_count,
+            comments: response.data.engagement.comment_count,
+            shares: response.data.engagement.share_count,
+        };
+        return await updateData({id: id, data: data, returnData: true});
+    }
+};
+
 const getAsyncLoopData = async (data) => {
     return await itemOperations.fetchApiData(data.url).then(response => {
         if (response.status === 200) {
@@ -61,5 +73,4 @@ const getAsyncLoopData = async (data) => {
         return null;
     })
 };
-
 module.exports = itemOperations;

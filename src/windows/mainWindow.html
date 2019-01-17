@@ -10,21 +10,29 @@
     <link rel="stylesheet" href="../assets/css/style.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
           integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">-->
 </head>
 <body>
-<div id="app" class="window-body" >
+<div id="app" class="window-body">
 
 
     <ul class="collection" v-if="items.length">
-        <li class="collection-item avatar p-b-5" v-for="{dataValues} in items">
+        <li class="collection-item avatar p-b-5" v-for="({dataValues},index) in items">
             <img :src="dataValues.imageUrl" alt="" class="circle">
             <span class="title"> {{dataValues.title}}</span>
             <div class="post-engagement-line">
-                <i class="fas fa-thumbs-up fb-color"></i> {{dataValues.reactions}} | <i
-                    class="fas fa-comments fb-color"></i>
+               <span class="pull-left">
+                    <i class="fas fa-thumbs-up fb-color"></i> {{dataValues.reactions}} | <i
+                       class="fas fa-comments fb-color"></i>
                 {{dataValues.comments}} | <i class="fas fa-share fb-color"></i> {{dataValues.shares}} |
                 <i class="fas fa-clock fb-color"></i> {{dateTime(dataValues.updatedAt)}}
+               </span>
+                <span class="pull-right option-icon-buttons">
+                    <i class="fas fa-trash fb-color pointer" title="Delete Entry" @click="removeItem(index)"></i> |
+                   <i class="fas fa-sync-alt fb-color pointer" title="Refresh Data" @click="refreshItem(index)"></i>
+                </span>
             </div>
+            <div class="clearfix"></div>
             <a href="#!" class="secondary-content"></a>
         </li>
     </ul>
@@ -34,6 +42,8 @@
     const Vue = require('vue/dist/vue');
     const {ipcRenderer} = electron;
     const {dateTimeFormatter} = require('../mixins/helper');
+    const itemDbOperations = require('../database/itemDbOperations');
+    const itemOperations = require('../app/functions/itemOperations');
 
     const app = new Vue({
         el: '#app',
@@ -43,7 +53,18 @@
         },
         methods: {
             removeItem(index) {
-                this.items.splice(index, 1);
+                itemDbOperations.deleteItem({id: this.items[index].dataValues.id}).then(response => {
+                    console.log({i: response});
+                    this.items.splice(index, 1);
+                });
+            },
+            refreshItem(index) {
+                itemOperations.refreshItem({
+                    id: this.items[index].dataValues.id,
+                    url: this.items[index].dataValues.url
+                }).then(response => {
+                    this.items[index].dataValues = response.dataValues;
+                });
             }
         },
         mounted() {

@@ -11,9 +11,20 @@
   @extend .p-b-5;
 }
 
+.pointer {
+  cursor: pointer;
+}
 
 .fb-color {
   color: $fb-color;
+}
+
+.pull-right {
+  float: right;
+}
+
+.pull-left {
+  float: left;
 }
 
 /**
@@ -29,6 +40,7 @@ body {
   -ms-user-select: none;
   user-select: none;
 }
+
 /**
  * disable dragging of image
  */
@@ -44,3 +56,8 @@ img {
   padding-top: 5px;
 }
 
+.option-icon-buttons {
+  i {
+    padding: 0 5px;
+  }
+}

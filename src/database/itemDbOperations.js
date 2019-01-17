@@ -30,26 +30,40 @@ itemDbOperations.getAllData = async () => {
     });
 };
 
-itemDbOperations.updateData = async ({id, data}) => {
+/**
+ * @description update url details after re-fetching from the graph api
+ * @param {number} id
+ * @param {Object} data
+ * @param {boolean} returnData
+ * @returns {Promise<boolean>}
+ */
+itemDbOperations.updateData = async ({id, data, returnData = false}) => {
 
     const oldData = await Url.findOne({where: {id: id}});
-    return await oldData.update(data).then(response => {
-        // console.log({updated: id});
+    await oldData.update(data);
+    if (returnData === true) {
+        return await Url.findOne({where: {id: id}});
+    }
+    return true;
+
+};
+
+/**
+ * @description Delete a specific item from table
+ * @param {number} id
+ * @returns {Promise<boolean>}
+ */
+itemDbOperations.deleteItem = async ({id}) => {
+    return await Url.destroy({
+        where: {
+            id: id
+        }
+    }).then(response => {
+        console.log(response);
         return true;
     });
-    //
-    //             return true;
-    //         });
-    // return await Url.findOne({where: {id: id}}).then(oldData => {
-    //     console.log({updated: id});
-    //     if (oldData) {
-    //         oldData.update(data).then(response => {
-    //
-    //             return true;
-    //         });
-    //     }
-    // })
 };
+
 
 module.exports = itemDbOperations;
 

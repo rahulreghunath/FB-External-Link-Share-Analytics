@@ -10,10 +10,12 @@ let addWindow;
  */
 addItemWindowController.createAddWindow = () => {
     addWindow = new BrowserWindow({
-        width: 500,
-        height: 300,
+        width: 350,
+        height: 200,
         title: 'Add shopping window',
     });
+    addWindow.setResizable(false);
+    addWindow.setMinimizable(false);
 
     /**
      * load the html file into the window

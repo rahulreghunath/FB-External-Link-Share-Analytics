@@ -3,27 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <title>Add Url</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="../assets/plugins/materializecss/materializecss.min.css">
+    <script src="../assets/plugins/materializecss/materializecss.min.js"></script>
+    <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 <body>
 <div class="container">
 
     <form action="">
-        <div>
-            <label>Enter Url</label>
-            <input type="text" value="http://" id="item" autofocus>
+        <div class="row p-t-20">
+            <div class="input-field col s12">
+                <input id="item" autofocus type="text" class="">
+                <label for="item">URL</label>
+            </div>
+            <div class="col s12">
+                <button class="btn waves-effect waves-light">Add Url</button>
+            </div>
         </div>
-        <button class="btn waves-effect waves-light">Add Url</button>
+
+
     </form>
 </div>
 <script>
     const electron = require('electron');
     const {ipcRenderer} = electron;
+    const {dialog} = electron.remote;
+    const validUrl = require('valid-url');
+
     const form = document.querySelector('form');
+
     form.addEventListener('submit', (event) => {
         event.preventDefault();
         const item = document.querySelector('#item').value;
-        if (item!==''){
+
+        /**
+         * Showing error message if url is not correct
+         */
+        if (!validUrl.isUri(item)) {
+            dialog.showMessageBox(null, {
+                type: 'error',
+                buttons: ['OK'],
+                defaultId: 0,
+                title: 'Error',
+                message: 'Incorrect URL',
+                detail: 'The URL you given is not correct',
+            });
+        } else {
             ipcRenderer.send('item:add', item);
         }
     });

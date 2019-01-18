@@ -25,6 +25,10 @@ itemOperations.fetchApiData = async (url) => {
     }
 };
 
+/**
+ * @description refresh all items
+ * @returns {Promise<void>}
+ */
 itemOperations.refreshItems = async () => {
 
     const allData = await getAllData();
@@ -52,7 +56,12 @@ itemOperations.refreshItems = async () => {
     }
 
 };
-
+/**
+ * @description refresh single item
+ * @param {number} id
+ * @param {string} url
+ * @returns {Promise<void>}
+ */
 itemOperations.refreshItem = async ({id, url}) => {
     const response = await itemOperations.fetchApiData(url);
     if (response !== null) {
@@ -65,6 +74,10 @@ itemOperations.refreshItem = async ({id, url}) => {
     }
 };
 
+/**
+ * @param data
+ * @returns {Promise<void>}
+ */
 const getAsyncLoopData = async (data) => {
     return await itemOperations.fetchApiData(data.url).then(response => {
         if (response.status === 200) {
@@ -73,4 +86,5 @@ const getAsyncLoopData = async (data) => {
         return null;
     })
 };
+
 module.exports = itemOperations;
